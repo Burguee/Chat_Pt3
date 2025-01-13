@@ -9,6 +9,7 @@ const allUserList = document.getElementById("allUserList")
 const nicknameColorInput = document.getElementById("nicknameColorInput")
 const audioMessageCheckbox = document.getElementById("audioMessageCheckbox")
 const audioMessage = document.getElementById("audioMessage")
+const image = document.getElementById("image")
 
 document.getElementById("message-input-area").style.visibility = "hidden"
 let userList = []
@@ -46,10 +47,14 @@ function addUserToList(user) {
     userNames.scrollTop = userNames.scrollHeight
 }
 
-function displayMessage(message) {
+function displayMessage(content, isImage = false) {
     const messageElement = document.createElement('div')
     messageElement.classList.add('message')
-    messageElement.innerHTML = message
+    
+    
+    messageElement.innerHTML = content
+    
+    
     messagesDisplay.appendChild(messageElement)
     messagesDisplay.scrollTop = messagesDisplay.scrollHeight
 }
@@ -63,19 +68,43 @@ function removeUserFromList(nickname) {
     })
 }
 
-function sendMessage(message, targetUser = null) {
-    if (message.trim() !== "") {
-        if (targetUser) {
-            const targetUserColor = userColors[targetUser]
-            socket.emit('privateMessage', {
-                message: message,
-                recivedNickname: targetUser
-            })
-            displayMessage(`<span class="username">Falou para <span style="color: ${targetUserColor}">${targetUser}</span>: </span>${message}`)
-        } else {
-            socket.emit('publicMessage', message)
+function sendMessage(content, isImage = false, targetUser = null) {
+    if (isImage && content instanceof File) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            const base64Image = e.target.result
+            if (targetUser) {
+                socket.emit('privateMessage', {
+                    message: base64Image,
+                    recivedNickname: targetUser,
+                    isImage: true
+                })
+                displayMessage(`<span class="username">Enviou imagem para <span style="color: ${userColors[targetUser]}">${targetUser}</span>: </span><img src="${base64Image}" alt="Pré-visualização da Imagem" class="images">`)
+            } else {
+                socket.emit('publicMessage', {
+                    message: base64Image,
+                    isImage: true
+                })
+            }
         }
-        messageInput.value = ""
+        reader.readAsDataURL(content)
+    } else if (!isImage) {
+        if (content.trim() !== "") {
+            if (targetUser) {
+                socket.emit('privateMessage', {
+                    message: content,
+                    recivedNickname: targetUser,
+                    isImage: false
+                })
+                displayMessage(`<span class="username">Falou para <span style="color: ${userColors[targetUser]}">${targetUser}</span>: </span>${content}`)
+            } else {
+                socket.emit('publicMessage', {
+                    message: content,
+                    isImage: false
+                })
+            }
+            messageInput.value = ""
+        }
     }
 }
 
@@ -96,7 +125,6 @@ function updateUIWithUserList(userList) {
 
 function blockUsers (blockedNickname) {
     blockedUsers.push(blockedNickname)
-    console.log(blockedUsers)
     const blockedUserColor = userColors[blockedNickname]
     displayMessage(`<span class="username">Você bloqueou o usuário <span style="color: ${blockedUserColor}">${blockedNickname}</span></span>`)
 }
@@ -139,19 +167,18 @@ userNames.addEventListener('click', function(event) {
 allUserList.addEventListener('click', function(event) {
     selectedUser = null
     messageInput.placeholder = `Digite sua mensagem...`
-
 })
 
 sendButton.addEventListener("click", () => {
     const message = messageInput.value
-    sendMessage(message, selectedUser)
+    sendMessage(message, false, selectedUser)
 })
 
 messageInput.addEventListener("keypress", (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault()
         const message = messageInput.value
-        sendMessage(message, selectedUser)
+        sendMessage(message, false, selectedUser)
     } else if (event.key === 'Enter' && event.shiftKey) {
 
     }
@@ -159,7 +186,11 @@ messageInput.addEventListener("keypress", (event) => {
 
 socket.on('publicMessage', (messageData) => {
     if (!blockedUsers.includes(messageData.nickname)) {
-        displayMessage(`<span class="username" style="color: ${messageData.color}">${messageData.nickname}</span> falou: ${messageData.message}`)
+        if (messageData.isImage) {
+            displayMessage(`<span class="username" style="color: ${messageData.color}">${messageData.nickname}</span> falou: <img src="${messageData.message}" alt="Pré-visualização da Imagem" class="images">`)
+        } else {
+            displayMessage(`<span class="username" style="color: ${messageData.color}">${messageData.nickname}</span> falou: ${messageData.message}`)
+        }
     }
     if (messageData.nickname !== nicknameInput.value) {
         reproduceAudioMessage()
@@ -168,7 +199,11 @@ socket.on('publicMessage', (messageData) => {
 
 socket.on('privateMessage', (data) => {
     if (!blockedUsers.includes(data.nickname)) {
-        displayMessage(`<span class="username">Mensagem privada de <span style="color: ${data.color}">${data.nickname}</span>: </span>${data.message}`)
+        if (data.isImage) {
+            displayMessage(`<span class="username">Mensagem privada de <span style="color: ${data.color}">${data.nickname}</span>: </span><img src="${data.message}" alt="Pré-visualização da Imagem" class="images">`)
+        } else {
+            displayMessage(`<span class="username">Mensagem privada de <span style="color: ${data.color}">${data.nickname}</span>: </span>${data.message}`)
+        }
     }
     reproduceAudioMessage()
 })
@@ -199,5 +234,12 @@ userNames.addEventListener('click', function(event) {
                 blockIcon.setAttribute('data-blocked', 'false')
             }
         }
+    }
+})
+
+image.addEventListener('change', (event) => {
+    const file = event.target.files[0]
+    if (file) {
+        sendMessage(file, true, selectedUser)
     }
 })

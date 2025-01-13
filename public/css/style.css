@@ -193,3 +193,15 @@ li i:hover {
     margin-left: 0.3rem;
     background-color: #64B5F6;
 }
+
+#checkbox-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.images {
+    max-width: 15rem;
+    max-height: 15rem;
+}

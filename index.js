@@ -49,11 +49,12 @@ io.on('connection', (socket) => {
         socket.emit('existingUsers', Array.from(connectedUsers.values()))
     })
 
-    socket.on('publicMessage', (msg) => {
+    socket.on('publicMessage', (publicMessageData) => {
         io.emit('publicMessage', {
-            message: msg,
+            message: publicMessageData.message,
             nickname: socket.data.nickname,
-            color: socket.userColor
+            color: socket.userColor,
+            isImage: publicMessageData.isImage
         })
     })
 
@@ -66,7 +67,8 @@ io.on('connection', (socket) => {
             io.to(socketId).emit('privateMessage', {
                 message: message,
                 nickname: socket.data.nickname,
-                color: socket.userColor
+                color: socket.userColor,
+                isImage: privateMessageData.isImage
             })            
         } else {
             console.error(`Recived with nickname "${recivedNickname}" not found`)
