@@ -13,37 +13,13 @@
     </audio>
 
     <script>
-        const teste = new Map();
+        const botao = document.getElementById('meuBotao');
+        const audio = document.getElementById('meuAudio');
 
-        // Adicionando usuários bloqueados
-        const userA = 'userA';
-        const userB = 'userB';
-        const userC = 'userC';
-        const userD = 'userD';
-
-        teste.set(userA, new Set([userB, userC, userD])); // userA bloqueou userB e userC
-        teste.set(userD, new Set([userB])); 
-
-
-        function abc (usuario) {
-            for (const [blockerUser, blockedUsers] of teste.entries()) {
-                console.log(blockerUser," - ",blockedUsers)
-                for (const blockedUser of blockedUsers) {
-                    console.log("usuarios bloqueados ",blockedUser)
-                    if (blockedUser === usuario) {
-                        return new Set(blockerUser)
-                    }
-                }
-            }
-        }
-        
-
-        let aa = abc(userB)
-        console.log("teste: ",aa)
-
-
-
-
+        botao.addEventListener('click', () => {
+            audio.currentTime = 0; // Reinicia o áudio caso já esteja tocando
+            audio.play();
+        });
     </script>
 
 </body>

@@ -7,6 +7,8 @@ const userNames = document.getElementById("user-names")
 const leaveButton = document.getElementById("leave")
 const allUserList = document.getElementById("allUserList")
 const nicknameColorInput = document.getElementById("nicknameColorInput")
+const audioMessageCheckbox = document.getElementById("audioMessageCheckbox")
+const audioMessage = document.getElementById("audioMessage")
 
 document.getElementById("message-input-area").style.visibility = "hidden"
 let userList = []
@@ -105,6 +107,13 @@ function unblockUsers (unblockedNickname) {
     displayMessage(`<span class="username">Você desbloqueou o usuário <span style="color: ${unblockedUserColor}">${unblockedNickname}</span></span>`)
 }
 
+function reproduceAudioMessage () {
+    if (audioMessageCheckbox.checked) {
+        audioMessage.currentTime = 0
+        audioMessage.play()
+    }
+}
+
 nicknameColorInput.addEventListener('change', () => {
     selectedColor = nicknameColorInput.value
 })
@@ -152,12 +161,16 @@ socket.on('publicMessage', (messageData) => {
     if (!blockedUsers.includes(messageData.nickname)) {
         displayMessage(`<span class="username" style="color: ${messageData.color}">${messageData.nickname}</span> falou: ${messageData.message}`)
     }
+    if (messageData.nickname !== nicknameInput.value) {
+        reproduceAudioMessage()
+    }
 })
 
 socket.on('privateMessage', (data) => {
     if (!blockedUsers.includes(data.nickname)) {
         displayMessage(`<span class="username">Mensagem privada de <span style="color: ${data.color}">${data.nickname}</span>: </span>${data.message}`)
     }
+    reproduceAudioMessage()
 })
 
 socket.on('changeNickname', (userData) => {
