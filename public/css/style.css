@@ -1,0 +1,195 @@
+@import './vendor/reset.css';
+
+body {
+    background-color: #121212;
+    color: #EEEEEE;
+    font-family: sans-serif;
+}
+
+.users-messages {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+#users-list {
+    background-color: #1E1E1E;
+    margin: auto;
+    max-height: 80vh;
+    height: 80vh;
+    width: 15vw;
+    padding: 1.5rem 0.5rem;
+    overflow-y: auto;
+    border: 1px solid #424242;
+    border-top: none;
+    border-left: none;
+}
+
+h3 {
+    padding-bottom: 1rem;
+}
+
+h4 {
+    padding-bottom: 0.5rem;
+}
+
+u {    
+    cursor: pointer;
+}
+
+li {
+    margin-bottom: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    background-color: #282828;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+li:hover {
+    background-color: #383838;
+}
+
+#messages-display {
+    background-color: #1E1E1E;
+    flex-grow: 1;
+    margin: auto;
+    max-height: 80vh;
+    height: 80vh;
+    width: 85vw;
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+    border-bottom: 1px solid #424242;
+}
+
+.username {
+    color: #AAAAAA;
+    font-weight: bold;
+    margin-right: 0.3rem;
+}
+
+.message {
+    margin-bottom: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    background-color: #282828;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+}
+
+#others {
+    margin: auto;
+    max-height: 20vh;
+    height: 20vh;
+    width: 15vw;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #424242;
+}
+
+.leave {
+    text-align: center;
+}
+
+#leave {
+    cursor: pointer;
+}
+
+#github {
+    text-align: center;
+}
+
+.github-icon{
+    padding-right: 0.2rem;
+}
+
+.block-icon {
+    padding-right: 0.3rem;
+    padding-top: 0.2rem;
+    color: #AAAAAA;
+}
+
+li i {
+    transition: background-color 0.3s ease;
+}
+
+li i:hover {
+    color: #ADD8E6;
+}
+
+#nick-users-message {
+    margin: auto;
+    max-height: 20vh;
+    height: 20vh;
+    width: 85vw;
+    padding: 1.5rem 1.5rem;
+}
+
+#nick-users-message {
+    background-color: #1E1E1E;
+    padding: 0.6rem;
+    padding: 0.6rem;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+}
+
+#nickname-form-hidden {
+    display: flex;
+    flex-direction: column;
+}
+
+#nickname-form button {
+    background-color: #64B5F6;
+    border: none;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    margin-left: 0.3rem;
+    background-color: #64B5F6;
+}
+
+.error {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.3;
+    padding-left: 10.7rem;
+}
+
+.message-input {
+    display: flex;
+    width: 100%;
+    margin-bottom: 0.3rem;
+}
+
+#message-input {
+    background-color: #282828;
+    border: none;
+    color: #EEEEEE;
+    padding: 0.3rem;
+    flex-grow: 1;
+    resize: vertical;
+    min-height: 7rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    resize: none;
+}
+
+.message-input button {
+    background-color: #64B5F6;
+    border: none;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    margin-left: 0.3rem;
+    background-color: #64B5F6;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Chat</title>
+</head>
+<body>
+    <section class="users-messages">
+        <div id="users-list">
+            <h3>Participantes</h3>
+            <h4><u id="allUserList">Falar com todos</u></h4>
+            <ul id="user-names"></ul>
+        </div>
+        <div class="messages-display" id="messages-display"></div>
+    </section>
+    <section class="footer">
+        <div id="others">
+            <span class="leave"><strong><u id="leave" onclick="leaveChat()">Sair da Sala</u></strong></span>            
+            <a id="github" href="https://github.com/Burguee" target="_blank"><i class="fa-brands fa-github github-icon"></i>Github</a>
+        </div>
+        <div id="nick-users-message">
+            <div id="nickname-form-hidden">
+                <div id="nickname-form">
+                    <label for="nickname">Escolha um apelido:</label>
+                    <input type="text" id="nickname" name="nickname">
+                    <button onclick="hiddenNickname()">Entrar</button>
+                </div>
+                <span id="error-nickname" class="error"></span>
+                <input id="nicknameColorInput" type="color" list="presetColors" value="#AAAAAA">
+                <datalist id="presetColors">
+                    <option>#AAAAAA</option>
+                    <option>#3399FF</option>
+                    <option>#7CFC00</option>
+                    <option>#228B22</option>
+                    <option>#FFD700</option>
+                    <option>#FF69B4</option>
+                    <option>#FF8C00</option>
+                    <option>#EE82EE</option>
+                    <option>#9400D3</option>
+                    <option>#A020F0</option>
+                </datalist>
+            </div>
+            <div class="message-input" id="message-input-area">
+                <textarea id="message-input" placeholder="Digite sua mensagem..."></textarea>
+                <button id="send-button">Enviar</button>
+                <input type="submit" hidden />
+            </div>
+            <label><input type="checkbox" id="audioMessageCheckbox"> Tocar sons no Bate Papo</label>
+            <audio id="audioMessage">
+                <source src="./assets/sounds/chat_sound.mp3" type="audio/mpeg">
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+        </div>
+    </section>
+    <script src="https://cdn.socket.io/4.8.0/socket.io.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>

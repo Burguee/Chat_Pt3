@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemplo de Som</title>
+</head>
+<body>
+
+    <button id="meuBotao">Clique aqui</button>
+
+    <audio id="meuAudio">
+        <source src="./public/assets/sounds/chat_sound.mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+
+    <script>
+        const teste = new Map();
+
+        // Adicionando usuários bloqueados
+        const userA = 'userA';
+        const userB = 'userB';
+        const userC = 'userC';
+        const userD = 'userD';
+
+        teste.set(userA, new Set([userB, userC, userD])); // userA bloqueou userB e userC
+        teste.set(userD, new Set([userB])); 
+
+
+        function abc (usuario) {
+            for (const [blockerUser, blockedUsers] of teste.entries()) {
+                console.log(blockerUser," - ",blockedUsers)
+                for (const blockedUser of blockedUsers) {
+                    console.log("usuarios bloqueados ",blockedUser)
+                    if (blockedUser === usuario) {
+                        return new Set(blockerUser)
+                    }
+                }
+            }
+        }
+        
+
+        let aa = abc(userB)
+        console.log("teste: ",aa)
+
+
+
+
+    </script>
+
+</body>
+</html>
